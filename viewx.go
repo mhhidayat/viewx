@@ -3,9 +3,9 @@ package viewx
 import (
 	"net/http"
 	"path/filepath"
-	"strings"
 	"text/template"
 
+	"github.com/mhhidayat/viewx/helpers"
 	"github.com/mhhidayat/viewx/templatex"
 )
 
@@ -18,9 +18,7 @@ func Init(title string) {
 
 func Render(w http.ResponseWriter, viewFile string, data map[string]any) {
 
-	if !strings.HasSuffix(viewFile, ".html") {
-		viewFile += ".html"
-	}
+	viewFile = helpers.FormatFileName(viewFile)
 
 	templates := template.Must(template.ParseFiles(
 		"views/layout/index.html",
@@ -46,9 +44,7 @@ func Render(w http.ResponseWriter, viewFile string, data map[string]any) {
 
 func RenderHTML(w http.ResponseWriter, viewFile string, data map[string]any) {
 
-	if !strings.HasSuffix(viewFile, ".html") {
-		viewFile += ".html"
-	}
+	viewFile = helpers.FormatFileName(viewFile)
 
 	if data == nil {
 		data = map[string]any{}
