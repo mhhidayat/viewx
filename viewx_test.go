@@ -28,6 +28,7 @@ func TestRenderHTML(t *testing.T) {
 	w := httptest.NewRecorder()
 
 	RenderHTML(w, "views/index", nil)
+	RenderHTML(w, "views.index", nil)
 
 	resp := w.Result()
 
