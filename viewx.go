@@ -2,6 +2,7 @@ package viewx
 
 import (
 	"net/http"
+	"path/filepath"
 	"strings"
 	"text/template"
 
@@ -40,5 +41,27 @@ func Render(w http.ResponseWriter, viewFile string, data map[string]any) {
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
+	}
+}
+
+func RenderHTML(w http.ResponseWriter, viewFile string, data map[string]any) {
+
+	if !strings.HasSuffix(viewFile, ".html") {
+		viewFile += ".html"
+	}
+
+	if data == nil {
+		data = map[string]any{}
+	}
+
+	tmpl, err := template.ParseFiles(viewFile)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	err = tmpl.ExecuteTemplate(w, filepath.Base(viewFile), data)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 }
